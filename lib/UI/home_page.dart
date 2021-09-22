@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Widgets/home_widget.dart';
 import 'Widgets/error_widget.dart';
 import 'package:grocery_list/UI/Widgets/add_row_page_widget.dart';
-import 'package:grocery_list/UI/hamburger_menu_features.dart';
+import 'package:grocery_list/Model/hamburger_menu_features.dart';
 import 'package:grocery_list/Model/item.dart';
 
 class MyHomePage extends StatelessWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_list/Bloc/cubit/grocery_list_cubit.dart';
 import 'package:grocery_list/UI/Widgets/build_row_widget.dart';
-import 'package:grocery_list/UI/hamburger_menu_features.dart';
+import 'package:grocery_list/Model/hamburger_menu_features.dart';
 import 'package:grocery_list/Model/item.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,19 +34,11 @@ class HomeWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.blue,
                   ),
-                  child: Text('Drawer Header'),
+                  child: Text(''),
                 )),
             ListTile(
               title: const Text('Delete All Rows'),
               onTap: () => hmf.removeAllItems(context),
-            ),
-            ListTile(
-              title: const Text('Itemm 2'), //TODO Check all items
-              onTap: () {},
-            ),
-            ListTile(
-              title: const Text('Item 3'), //TODO Uncheck all items
-              onTap: () {},
             ),
           ],
         ),

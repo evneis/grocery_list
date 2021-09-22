@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:grocery_list/Database/Database.dart';
 import 'package:grocery_list/Model/item.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'grocery_list_state.dart';
 
 class GroceryListCubit extends Cubit<GroceryListState> {
+  final DatabaseProvider db = DatabaseProvider.dbProvider;
   GroceryListCubit(List<RowItem> empty, this._preferences)
       : super(
           GroceryListStateInitial(empty, _preferences),
@@ -19,6 +21,8 @@ class GroceryListCubit extends Cubit<GroceryListState> {
   void addrow(List<String> inputRow) async {
     RowItem item = RowItem(itemName: inputRow[0], rowId: inputRow[1]);
     items.add(item);
+    // final d = db.getDatabase();
+    // d.insert(, item.);
     final String encodeItems = RowItem.encode(items);
     await _preferences.setString('items', encodeItems);
     emit(GroceryListStateAdded(items, _preferences));
