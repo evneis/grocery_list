@@ -5,21 +5,26 @@ abstract class GroceryListState {
   const GroceryListState();
 }
 
-class GroceryListStateInitial extends GroceryListState {}
+class GroceryListStateInitial extends GroceryListState {
+  final List<RowItem> emptyItemsList;
+  final SharedPreferences prefs;
+  const GroceryListStateInitial(this.emptyItemsList, this.prefs);
+}
 
 class GroceryListStateAdded extends GroceryListState {
-  final List<String> input;
-  const GroceryListStateAdded(this.input);
+  final List<RowItem> items;
+  final SharedPreferences prefs;
+  const GroceryListStateAdded(this.items, this.prefs);
 
   @override //?
   bool operator ==(Object o) {
     if (identical(this, o)) return true;
 
-    return o is GroceryListStateAdded && o.input == input;
+    return o is GroceryListStateAdded && o.items == items;
   }
 
   @override
-  int get hashCode => input.hashCode;
+  int get hashCode => items.hashCode;
 }
 
 class GroceryListStateAddRowPage extends GroceryListState {}

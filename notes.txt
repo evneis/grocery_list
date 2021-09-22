@@ -1,3 +1,15 @@
 Should grocery list contain a list of build_row_widgets that is in home_page ui
 Plus button should display a widget on top of previous widget to add a build row widget
 sliding list item should delete it
+
+Good for testing vars in a widget
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          // Retrieve the text the that user has entered by using the
+          // TextEditingController.
+          content: Text(inputMap.toString()),
+        );
+      },
+    );

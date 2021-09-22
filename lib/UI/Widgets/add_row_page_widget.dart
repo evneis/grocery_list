@@ -12,6 +12,9 @@ class AddRowPageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Grocery List'),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -44,8 +47,17 @@ class AddRowPageWidget extends StatelessWidget {
   }
 
   void addItem(BuildContext context, String input) {
-    final grocerylistcubit = context.read<
-        GroceryListCubit>(); // After v6.1.0 both context.bloc(What I had) and context.repository are deprecated in favor of context.read and context.watch
-    grocerylistcubit.addrow(input.split(","));
+    //TODO display error message instand of simply returning to home added doesnt work
+    final grocerylistcubit = context.read<GroceryListCubit>();
+    if (input.contains(',')) {
+      var inputSplit = input.split(',');
+      if (inputSplit[0].isNotEmpty && inputSplit[1].isNotEmpty) {
+        grocerylistcubit.addrow(inputSplit);
+      } else {
+        grocerylistcubit.returnToHome();
+      }
+    } else {
+      grocerylistcubit.returnToHome();
+    }
   }
 }
