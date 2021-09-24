@@ -5,16 +5,13 @@ import 'package:grocery_list/UI/Widgets/build_row_widget.dart';
 import 'package:grocery_list/Model/hamburger_menu_features.dart';
 import 'package:grocery_list/Model/item.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
 // replace return BuildRowWidget with return every item in rows.
 class HomeWidget extends StatelessWidget {
-  // final List<RowItem> items;
-  final SharedPreferences prefs;
   HomeWidget(
-    this.prefs, {
+    this.itemsList, {
     Key? key,
   }) : super(key: key);
+  List<RowItem> itemsList;
   final HamburgerMenuFeatures hmf = HamburgerMenuFeatures();
   var bool = false;
 
@@ -44,67 +41,33 @@ class HomeWidget extends StatelessWidget {
         ),
       ),
       body: Center(
-          child: FutureBuilder<List<RowItem>>(
-              future: getPrefs(context, prefs),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<RowItem>> snapshot) {
-                List<Widget> children;
-                if (snapshot.data != null) {
-                  List<RowItem>? items = snapshot.data;
-                  children = <Widget>[
-                    Expanded(
-                        child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                            child: ListView.separated(
-                          itemBuilder: (_, index) {
-                            if (items != null) {
-                              // final item = items[index];
-                              final item = items[index];
-                              // if (index.isOdd) return const Divider();
-                              // return const BuildRowWidget([]);
-                              return Dismissible(
-                                  direction: DismissDirection.horizontal,
-                                  key: Key(item.toString()),
-                                  onDismissed: (direction) {
-                                    removeItem(context, item);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content: Text(
-                                                item.itemName + ' removed')));
-                                  },
-                                  child: ListTile(
-                                    tileColor: Color.fromARGB(100, 0, 100, 0),
-                                    title: BuildRowWidget(item),
-                                  ));
-                            } else {
-                              return Text("data");
-                            }
-                          },
-                          itemCount: items != null ? items.length : 0,
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const Divider(),
-                        )),
-                      ],
-                    )),
-                  ];
-                } else {
-                  children = const <Widget>[
-                    SizedBox(
-                        child: CircularProgressIndicator(),
-                        width: 60,
-                        height: 60)
-                  ];
-                }
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: children,
-                  ),
-                );
-              })),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ListView.separated(
+              itemBuilder: (_, index) {
+                final item = itemsList[index];
+                return Dismissible(
+                    direction: DismissDirection.horizontal,
+                    key: Key(item.toString()),
+                    onDismissed: (direction) {
+                      removeItem(context, item);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(item.itemName + ' removed'),
+                      ));
+                    },
+                    child: ListTile(
+                      tileColor: Color.fromARGB(100, 0, 100, 0),
+                      title: BuildRowWidget(item),
+                    ));
+              },
+              itemCount: itemsList != null ? itemsList.length : 0,
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(),
+            ),
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Increment',
         onPressed: () =>
@@ -123,16 +86,5 @@ class HomeWidget extends StatelessWidget {
   void removeItem(BuildContext context, row) {
     final grocerylistcubit = context.read<GroceryListCubit>();
     grocerylistcubit.removeItem(row);
-  }
-
-  Future<List<RowItem>> getPrefs(
-      BuildContext context, SharedPreferences prefs) async {
-    var items = prefs.getString('items');
-    if (items == null) {
-      return [];
-    }
-    String itemsString = items.toString();
-    List<RowItem> rowItems = RowItem.decode(itemsString);
-    return rowItems;
   }
 }

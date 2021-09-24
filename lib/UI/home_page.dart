@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_list/Bloc/cubit/grocery_list_cubit.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Widgets/home_widget.dart';
 import 'Widgets/error_widget.dart';
@@ -10,13 +9,11 @@ import 'package:grocery_list/Model/hamburger_menu_features.dart';
 import 'package:grocery_list/Model/item.dart';
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key, required this.title, required this.prefs})
-      : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
   final List<RowItem> initialItemList = [];
   final HamburgerMenuFeatures hmf = HamburgerMenuFeatures();
-  SharedPreferences prefs;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +25,7 @@ class MyHomePage extends StatelessWidget {
 
   BlocProvider<GroceryListCubit> buildBody(BuildContext context) {
     return BlocProvider(
-      create: (_) => GroceryListCubit(initialItemList, prefs),
+      create: (_) => GroceryListCubit(initialItemList),
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(0),
@@ -37,13 +34,13 @@ class MyHomePage extends StatelessWidget {
               child: BlocBuilder<GroceryListCubit, GroceryListState>(
                 builder: (context, state) {
                   if (state is GroceryListStateInitial) {
-                    return HomeWidget(state.prefs);
+                    return HomeWidget(state.emptyItemsList);
                   }
                   if (state is GroceryListStateAddRowPage) {
                     return AddRowPageWidget();
                   }
                   if (state is GroceryListStateAdded) {
-                    return HomeWidget(state.prefs);
+                    return HomeWidget(state.items);
                   }
                   {
                     return const ErrorWidgetMine();

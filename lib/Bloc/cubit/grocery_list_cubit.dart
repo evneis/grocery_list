@@ -7,41 +7,37 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'grocery_list_state.dart';
 
 class GroceryListCubit extends Cubit<GroceryListState> {
-  final DatabaseProvider db = DatabaseProvider.dbProvider;
-  GroceryListCubit(List<RowItem> empty, this._preferences)
+  final DatabaseProvider db = DatabaseProvider();
+  GroceryListCubit(List<RowItem> empty)
       : super(
-          GroceryListStateInitial(empty, _preferences),
+          GroceryListStateInitial(empty),
         );
-  List<RowItem> items = [];
-  final SharedPreferences _preferences;
   void addpage() {
     emit(GroceryListStateAddRowPage());
   }
 
   void addrow(List<String> inputRow) async {
-    RowItem item = RowItem(itemName: inputRow[0], rowId: inputRow[1]);
-    items.add(item);
-    // final d = db.getDatabase();
-    // d.insert(, item.);
-    final String encodeItems = RowItem.encode(items);
-    await _preferences.setString('items', encodeItems);
-    emit(GroceryListStateAdded(items, _preferences));
+    RowItem item =
+        RowItem(itemName: inputRow[0], rowId: inputRow[1], isDone: 0);
+    db.insertItem(item);
+    List<RowItem> items = await db.getAllItems();
+    emit(GroceryListStateAdded(items));
   }
 
-  void removeItem(item) async {
-    items.remove(item);
-    final String encodeItems = RowItem.encode(items);
-    await _preferences.setString('items', encodeItems);
+  void removeItem(RowItem item) async {
+    db.deleteItem(item.itemName);
+    List<RowItem> items = await db.getAllItems();
+    emit(GroceryListStateAdded(items));
   }
 
-  void returnToHome() {
-    emit(GroceryListStateAdded(items, _preferences));
+  void returnToHome() async {
+    List<RowItem> items = await db.getAllItems();
+    emit(GroceryListStateAdded(items));
   }
 
   void removeAllItems() async {
-    items = [];
-    emit(GroceryListStateAdded(items, _preferences));
-    final String encodeItems = RowItem.encode(items);
-    await _preferences.setString('items', encodeItems);
+    db.deleteAllItems();
+    List<RowItem> items = await db.getAllItems();
+    emit(GroceryListStateAdded(items));
   }
 }

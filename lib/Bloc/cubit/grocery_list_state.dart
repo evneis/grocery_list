@@ -7,14 +7,12 @@ abstract class GroceryListState {
 
 class GroceryListStateInitial extends GroceryListState {
   final List<RowItem> emptyItemsList;
-  final SharedPreferences prefs;
-  const GroceryListStateInitial(this.emptyItemsList, this.prefs);
+  const GroceryListStateInitial(this.emptyItemsList);
 }
 
 class GroceryListStateAdded extends GroceryListState {
   final List<RowItem> items;
-  final SharedPreferences prefs;
-  const GroceryListStateAdded(this.items, this.prefs);
+  const GroceryListStateAdded(this.items);
 
   @override //?
   bool operator ==(Object o) {
