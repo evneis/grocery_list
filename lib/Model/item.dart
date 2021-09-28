@@ -12,16 +12,16 @@ class RowItem {
 
   factory RowItem.fromJson(Map<String, dynamic> jsonData) {
     return RowItem(
-      itemName: jsonData['itemName'],
-      rowId: jsonData['rowId'],
-      isDone: jsonData['isDone'],
+      itemName: jsonData['item'],
+      rowId: jsonData['aisle'],
+      isDone: jsonData['is_done'],
     );
   }
 
   static Map<String, dynamic> toMap(RowItem rowItem) => {
-        'itemName': rowItem.itemName,
-        'rowID': rowItem.rowId,
-        'isDone': rowItem.isDone,
+        'item': rowItem.itemName,
+        'aisle': rowItem.rowId,
+        'is_done': rowItem.isDone,
       };
 
   static String encode(List<RowItem> rowItems) => json.encode(
@@ -35,9 +35,9 @@ class RowItem {
     List<RowItem> items = [];
     for (int i = 0; i < itemsJson.length; i++) {
       items.add(RowItem(
-          itemName: itemsJson[i]["itemName"],
-          rowId: itemsJson[i]["rowID"],
-          isDone: itemsJson[i]["isDone"]));
+          itemName: itemsJson[i]["item"],
+          rowId: itemsJson[i]["aisle"],
+          isDone: itemsJson[i]["is_done"]));
     }
 
     return items;

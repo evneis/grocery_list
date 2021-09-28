@@ -6,45 +6,45 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-const shopTABLE = 'items';
+const shopTABLE = 'itemTable';
 
 class DatabaseProvider {
   Future<Database> createDatabase() async {
-    String path = join(await getDatabasesPath(), "groceryItems.db");
+    String path = join(await getDatabasesPath(), "groceryItems2.db");
     Database database =
         await openDatabase(path, version: 1, onCreate: (db, version) {
       return db.execute(
-          'CREATE TABLE items(id INTEGER PRIMARY KEY, item TEXT, aisle TEXT, is_done INTEGER)');
+          'CREATE TABLE itemTable(id INTEGER PRIMARY KEY, item TEXT, aisle TEXT, is_done INTEGER)');
     });
     return database;
   }
 
-  void initDB(Database database, int version) {
-    database.execute("CREATE TABLE items("
-        "id INTEGER PRIMARY KEY, "
-        "item TEXT, "
-        "aisle TEXT, "
-        "is_done INTEGER, "
-        ")");
-  }
+  // void initDB(Database database, int version) {
+  //   database.execute("CREATE TABLE items("
+  //       "id INTEGER PRIMARY KEY, "
+  //       "item TEXT, "
+  //       "aisle TEXT, "
+  //       "is_done INTEGER, "
+  //       ")");
+  // }
 
   Future<void> insertItem(RowItem item) async {
     final database = await createDatabase();
     await database.insert(
-      'items',
+      'itemTable',
       RowItem.toMap(item),
     );
   }
 
   Future<List<RowItem>> getAllItems() async {
     final database = await createDatabase();
-    final List<Map<String, dynamic>> maps = await database.query('items');
+    final List<Map<String, dynamic>> maps = await database.query('itemTable');
 
     return List.generate(maps.length, (i) {
       return RowItem(
-        itemName: maps[i]['itemName'],
-        rowId: maps[i]['rowId'],
-        isDone: maps[i]['isDone'],
+        itemName: maps[i]['item'],
+        rowId: maps[i]['aisle'],
+        isDone: maps[i]['is_done'],
       );
     });
   }
@@ -52,7 +52,7 @@ class DatabaseProvider {
   Future<void> updateDog(RowItem item) async {
     final database = await createDatabase();
     await database.update(
-      'items',
+      'itemTable',
       RowItem.toMap(item),
     );
   }
@@ -60,8 +60,8 @@ class DatabaseProvider {
   Future<void> deleteItem(String itemName) async {
     final database = await createDatabase();
     await database.delete(
-      'items',
-      where: 'itemName = ?',
+      'itemTable',
+      where: 'item = ?',
       whereArgs: [itemName],
     );
   }
@@ -69,7 +69,7 @@ class DatabaseProvider {
   Future<void> deleteAllItems() async {
     final database = await createDatabase();
     await database.delete(
-      'items',
+      'itemTable',
     );
   }
 }

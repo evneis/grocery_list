@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_list/Database/database.dart';
+import 'Model/item.dart';
 import 'UI/home_page.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  runApp(MyApp());
+  final DatabaseProvider db = DatabaseProvider();
+  List<RowItem> items = await db.getAllItems();
+  runApp(MyApp(items));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({
+  MyApp(
+    this.items, {
     Key? key,
   }) : super(key: key);
+  List<RowItem> items;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,7 +24,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(
-        title: 'Flutter Demo Home Page',
+        items,
       ),
     );
   }

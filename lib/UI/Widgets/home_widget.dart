@@ -44,27 +44,29 @@ class HomeWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ListView.separated(
-              itemBuilder: (_, index) {
-                final item = itemsList[index];
-                return Dismissible(
-                    direction: DismissDirection.horizontal,
-                    key: Key(item.toString()),
-                    onDismissed: (direction) {
-                      removeItem(context, item);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(item.itemName + ' removed'),
+            Expanded(
+              child: ListView.separated(
+                itemBuilder: (_, index) {
+                  final item = itemsList[index];
+                  return Dismissible(
+                      direction: DismissDirection.horizontal,
+                      key: Key(item.toString()),
+                      onDismissed: (direction) {
+                        removeItem(context, item);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(item.itemName + ' removed'),
+                        ));
+                      },
+                      child: ListTile(
+                        tileColor: Color.fromARGB(100, 0, 100, 0),
+                        title: BuildRowWidget(item),
                       ));
-                    },
-                    child: ListTile(
-                      tileColor: Color.fromARGB(100, 0, 100, 0),
-                      title: BuildRowWidget(item),
-                    ));
-              },
-              itemCount: itemsList != null ? itemsList.length : 0,
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-            ),
+                },
+                itemCount: itemsList != null ? itemsList.length : 0,
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(),
+              ),
+            )
           ],
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_list/Bloc/cubit/grocery_list_cubit.dart';
+import 'package:grocery_list/UI/Widgets/loading_widget.dart';
 
 import 'Widgets/home_widget.dart';
 import 'Widgets/error_widget.dart';
@@ -9,10 +10,12 @@ import 'package:grocery_list/Model/hamburger_menu_features.dart';
 import 'package:grocery_list/Model/item.dart';
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  MyHomePage(
+    this.items, {
+    Key? key,
+  }) : super(key: key);
 
-  final String title;
-  final List<RowItem> initialItemList = [];
+  final List<RowItem> items;
   final HamburgerMenuFeatures hmf = HamburgerMenuFeatures();
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class MyHomePage extends StatelessWidget {
 
   BlocProvider<GroceryListCubit> buildBody(BuildContext context) {
     return BlocProvider(
-      create: (_) => GroceryListCubit(initialItemList),
+      create: (_) => GroceryListCubit(items),
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(0),
