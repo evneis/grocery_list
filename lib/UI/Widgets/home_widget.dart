@@ -50,7 +50,7 @@ class HomeWidget extends StatelessWidget {
                   final item = itemsList[index];
                   return Dismissible(
                       direction: DismissDirection.horizontal,
-                      key: Key(item.toString()),
+                      key: Key(item.id.toString()),
                       onDismissed: (direction) {
                         removeItem(context, item);
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

@@ -2,11 +2,12 @@ import 'dart:convert';
 
 class RowItem {
   final String itemName, rowId;
-  final int isDone;
+  final int isDone, id;
 
   RowItem({
     required this.itemName,
     required this.rowId,
+    required this.id, // 0 when created, but gets updated value by database INTEGER PRIMARY KEY when added to database
     required this.isDone, // 0 for unchecked, 1 for Checked
   });
 
@@ -14,11 +15,13 @@ class RowItem {
     return RowItem(
       itemName: jsonData['item'],
       rowId: jsonData['aisle'],
+      id: jsonData['id'],
       isDone: jsonData['is_done'],
     );
   }
 
   static Map<String, dynamic> toMap(RowItem rowItem) => {
+        // There is no id in toMap as we do not give id to database, the database gives us an id.
         'item': rowItem.itemName,
         'aisle': rowItem.rowId,
         'is_done': rowItem.isDone,
@@ -37,6 +40,7 @@ class RowItem {
       items.add(RowItem(
           itemName: itemsJson[i]["item"],
           rowId: itemsJson[i]["aisle"],
+          id: itemsJson[i]["id"],
           isDone: itemsJson[i]["is_done"]));
     }
 

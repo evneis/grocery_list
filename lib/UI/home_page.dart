@@ -28,7 +28,7 @@ class MyHomePage extends StatelessWidget {
 
   BlocProvider<GroceryListCubit> buildBody(BuildContext context) {
     return BlocProvider(
-      create: (_) => GroceryListCubit(items),
+      create: (_) => GroceryListCubit(items)..init(),
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(0),

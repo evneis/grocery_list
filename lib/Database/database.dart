@@ -39,30 +39,28 @@ class DatabaseProvider {
   Future<List<RowItem>> getAllItems() async {
     final database = await createDatabase();
     final List<Map<String, dynamic>> maps = await database.query('itemTable');
-
     return List.generate(maps.length, (i) {
       return RowItem(
         itemName: maps[i]['item'],
         rowId: maps[i]['aisle'],
+        id: maps[i]['id'],
         isDone: maps[i]['is_done'],
       );
     });
   }
 
-  Future<void> updateDog(RowItem item) async {
+  Future<void> updateItem(RowItem item) async {
     final database = await createDatabase();
-    await database.update(
-      'itemTable',
-      RowItem.toMap(item),
-    );
+    await database.update('itemTable', RowItem.toMap(item),
+        where: 'id = ?', whereArgs: [item.id]);
   }
 
-  Future<void> deleteItem(String itemName) async {
+  Future<void> deleteItem(int itemId) async {
     final database = await createDatabase();
     await database.delete(
       'itemTable',
-      where: 'item = ?',
-      whereArgs: [itemName],
+      where: 'id = ?',
+      whereArgs: [itemId],
     );
   }
 

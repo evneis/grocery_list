@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_list/Bloc/cubit/grocery_list_cubit.dart';
 
 import 'package:grocery_list/Model/item.dart';
+import 'package:provider/src/provider.dart';
 
 //TODO Maybe Wrap widget in a container for a outline other then the divider when 2 or more items in list.
-class BuildRowWidget extends StatefulWidget {
+class BuildRowWidget extends StatelessWidget {
   bool isChecked = false;
   final RowItem row;
   BuildRowWidget(
@@ -12,10 +14,22 @@ class BuildRowWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _BuildRowWidget createState() => _BuildRowWidget();
-}
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(row.itemName),
+      subtitle:
+          Text("Aisle: " + row.rowId + ", isDone: " + row.isDone.toString()),
+      leading: Checkbox(
+        checkColor: Colors.white,
+        fillColor: MaterialStateProperty.resolveWith(getColor),
+        value: row.isDone == 0 ? false : true,
+        onChanged: (bool? value) {
+          checkItem(context, row);
+        },
+      ),
+    );
+  }
 
-class _BuildRowWidget extends State<BuildRowWidget> {
   Color getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
       MaterialState.pressed,
@@ -28,21 +42,8 @@ class _BuildRowWidget extends State<BuildRowWidget> {
     return Colors.blue;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(widget.row.itemName),
-      subtitle: Text("Aisle: " + widget.row.rowId),
-      leading: Checkbox(
-        checkColor: Colors.white,
-        fillColor: MaterialStateProperty.resolveWith(getColor),
-        value: widget.isChecked,
-        onChanged: (bool? value) {
-          setState(() {
-            widget.isChecked = value!;
-          });
-        },
-      ),
-    );
+  void checkItem(BuildContext context, RowItem row) {
+    final grocerylistcubit = context.read<GroceryListCubit>();
+    grocerylistcubit.checkItem(row);
   }
 }

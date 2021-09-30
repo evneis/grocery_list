@@ -5,8 +5,9 @@ import 'UI/home_page.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final DatabaseProvider db = DatabaseProvider();
-  List<RowItem> items = await db.getAllItems();
+  // final DatabaseProvider db = DatabaseProvider();
+  // List<RowItem> items = await db.getAllItems();
+  List<RowItem> items = [];
   runApp(MyApp(items));
 }
 
