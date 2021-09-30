@@ -26,3 +26,18 @@ class GroceryListStateAdded extends GroceryListState {
 }
 
 class GroceryListStateAddRowPage extends GroceryListState {}
+
+class GroceryListStateItemDescription extends GroceryListState {
+  final RowItem item;
+  const GroceryListStateItemDescription(this.item);
+
+  @override //?
+  bool operator ==(Object o) {
+    if (identical(this, o)) return true;
+
+    return o is GroceryListStateAdded && o.items == item;
+  }
+
+  @override
+  int get hashCode => item.hashCode;
+}

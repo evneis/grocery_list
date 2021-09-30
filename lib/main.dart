@@ -2,21 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:grocery_list/Database/database.dart';
 import 'Model/item.dart';
 import 'UI/home_page.dart';
+import 'package:flutter/src/widgets/navigator.dart';
+import 'package:auto_route/auto_route.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // final DatabaseProvider db = DatabaseProvider();
-  // List<RowItem> items = await db.getAllItems();
-  List<RowItem> items = [];
-  runApp(MyApp(items));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp(
-    this.items, {
+  MyApp({
     Key? key,
   }) : super(key: key);
-  List<RowItem> items;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,9 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(
-        items,
-      ),
+      home: MyHomePage(),
     );
   }
 }

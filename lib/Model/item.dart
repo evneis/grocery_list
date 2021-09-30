@@ -27,6 +27,16 @@ class RowItem {
         'is_done': rowItem.isDone,
       };
 
+// Used for displaying the contents of Item in a readable manner
+  static Map<String, dynamic> toMapDisplay(RowItem rowItem) {
+    String checkval = (rowItem.isDone == 0) ? "No" : "Yes";
+    return {
+      'Item Name': rowItem.itemName,
+      'Aisle': rowItem.rowId,
+      'Checked?': checkval,
+    };
+  }
+
   static String encode(List<RowItem> rowItems) => json.encode(
         rowItems
             .map<Map<String, dynamic>>((rowItem) => RowItem.toMap(rowItem))

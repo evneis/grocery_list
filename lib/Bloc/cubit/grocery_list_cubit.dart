@@ -61,4 +61,8 @@ class GroceryListCubit extends Cubit<GroceryListState> {
     List<RowItem> items = await db.getAllItems();
     emit(GroceryListStateAdded(items));
   }
+
+  void showItemDescription(RowItem item) {
+    emit(GroceryListStateItemDescription(item));
+  }
 }

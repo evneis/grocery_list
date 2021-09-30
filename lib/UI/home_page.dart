@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_list/Bloc/cubit/grocery_list_cubit.dart';
+import 'package:grocery_list/UI/Widgets/item_description_page.dart';
 import 'package:grocery_list/UI/Widgets/loading_widget.dart';
 
 import 'Widgets/home_widget.dart';
@@ -10,13 +11,11 @@ import 'package:grocery_list/Model/hamburger_menu_features.dart';
 import 'package:grocery_list/Model/item.dart';
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage(
-    this.items, {
+  MyHomePage({
     Key? key,
   }) : super(key: key);
 
-  final List<RowItem> items;
-  final HamburgerMenuFeatures hmf = HamburgerMenuFeatures();
+  final List<RowItem> items = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,6 +43,9 @@ class MyHomePage extends StatelessWidget {
                   }
                   if (state is GroceryListStateAdded) {
                     return HomeWidget(state.items);
+                  }
+                  if (state is GroceryListStateItemDescription) {
+                    return ItemDescriptionPage(state.item);
                   }
                   {
                     return const ErrorWidgetMine();
