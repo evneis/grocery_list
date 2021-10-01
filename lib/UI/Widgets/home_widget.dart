@@ -102,8 +102,10 @@ class HomeWidget extends StatelessWidget {
                           ),
                           FloatingActionButton(
                             tooltip: "Add Item",
-                            onPressed: () =>
-                                addItemOverlay(context, myController.text),
+                            onPressed: () => {
+                              addItemOverlay(context, myController.text),
+                              Navigator.pop(context2),
+                            },
                             child: Icon(Icons.add),
                           ),
                         ])));
