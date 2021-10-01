@@ -79,7 +79,7 @@ class HomeWidget extends StatelessWidget {
         onPressed: () => {
           showDialog(
               context: context,
-              builder: (context) {
+              builder: (BuildContext context2) {
                 return AlertDialog(
                     content: Container(
                         width: double.maxFinite,
